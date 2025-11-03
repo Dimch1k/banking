@@ -1,6 +1,8 @@
 package com.example.banking.controller;
 
 import com.example.banking.dto.AccountDto;
+import com.example.banking.dto.TransactionDto;
+import com.example.banking.dto.TransferFoundDto;
 import com.example.banking.service.AccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -45,5 +47,16 @@ public class AccountController {
     @PostMapping("/{id}/withdraw")
     public ResponseEntity<AccountDto> withdraw(@PathVariable Long id, @RequestParam double amount) {
         return new ResponseEntity<>(accountService.withdraw(id, amount), HttpStatus.OK);
+    }
+
+    @PostMapping("/transfer")
+    public ResponseEntity<String> transferFounds(@RequestBody TransferFoundDto transferFoundDto){
+        accountService.transferFounds(transferFoundDto);
+        return new ResponseEntity<>("Transferred", HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/transactions")
+    public ResponseEntity<List<TransactionDto>> getAccountAllTransaction(@PathVariable Long id) {
+        return new ResponseEntity<>(accountService.getAccountAllTransaction(id), HttpStatus.OK);
     }
 }
